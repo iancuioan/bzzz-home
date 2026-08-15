@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn bzzz_home.wsgi"
+    startCommand: "gunicorn bzzz_home.wsgi:application"
     envVars:
       - key: SECRET_KEY
         generateValue: true
