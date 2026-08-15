@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Bun venit!{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="mb-4">Bine ai venit pe platforma <strong>Bzzz</strong> 🐝</h1>
+  <p>
+      <strong>Bzzz</strong> este o platformă web gratuita, dedicată <span><img src="{% static 'images/beekeeper.jpg'%}" alt="beekeeper" class="logo-hover"></span> profesionisti sau amatori care doresc să își gestioneze eficient 🐝 🐝 🐝.
+    </p>
+  <p>
+      Creată cu grijă pentru utilizator și cu accent pe simplitate, <strong>Bzzz</strong> 🐝 e gata să-ți ia din <strong>bzzz</strong>-ul administrativ.
+  </p>
+  <p class="lead"></p>
+  {% if request.user.is_authenticated %}
+    <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg mt-4">
+      Hai la Stupina!
+    </a>
+  {% else %}
+  <a href="{% url 'register' %}" class="btn btn-success btn-lg mt-2">
+      Creează un cont
+  </a>
+  <p class="lead">sau</p>
+  <a href="{% url 'login' %}" class="btn btn-success btn-lg mt-2">
+      Autentifică-te
+  </a>
+  {% endif %}
+</div>
+
+{% endblock %}
+

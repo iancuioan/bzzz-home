@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+  <h2>Adaugă deplasare in pastoral.</h2>
+<br>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit" class="btn btn-primary" >💾 Salvează</button>
+    <a href="{% url 'list_houses' %}" class="btn btn-secondary">↩️ Înapoi</a>
+  </form><br>
+  {% if pastorale %}
+  {% for pastoral in pastorale %}
+  <b>{{pastoral.data|date:"d M Y"}}- {{pastoral.nr_familii}} familii deplasate la {{pastoral.destinatie}}.</b><a href="{% url 'delete_pastoral' pastoral.pk %}" class="btn btn-sm btn-outline-danger">Șterge</a><br>
+  {% endfor %}
+  {% endif %}
+{% endblock %}

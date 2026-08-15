@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Profilul meu{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Profilul meu</h2>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <p><strong>Nume utilizator:</strong> {{ request.user.username }}</p>
+      <p><strong>Email:</strong> {{ request.user.email }}</p>
+      <p><strong>Ultima autentificare:</strong> {{ request.user.last_login|date:"d.m.Y H:i" }}</p>
+      <p><strong>Cont creat:</strong> {{ request.user.date_joined|date:"d.m.Y H:i" }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Buton schimbare parolă în colțul din stinga jos -->
+<a href="{% url 'password_change' %}" 
+   class="btn btn-outline-secondary btn-sm "
+   style="z-index: 1030;">
+  <i class="bi bi-key-fill me-1"></i> Schimbă parola
+</a>
+{% endblock %}

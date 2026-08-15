@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <h2>Confirmare ștergere</h2>
+  <p>Ești sigur că vrei să ștergi: <strong>{{ house.name }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" style="background-color: red; color: white;">Da, șterge</button>
+    <a href="{% url 'list_houses' %}">Anulează</a>
+  </form>
+</div>
+{% endblock %}

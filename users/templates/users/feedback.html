@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Spune-ne părerea ta 🐝</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary mt-2">Trimite feedback</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+  <h2>Detalii vizita la <strong>{{house.name}}</strong>.</h2>
+<br>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">{{ form.data_visita.label_tag }}<br> {{ form.data_visita }}</div>
+    <br>
+    <div class="mb-3">{{ form.detalii_visita.label_tag }}<br> {{ form.detalii_visita }}</div>
+    <br>
+    <button type="submit" class="btn btn-primary">💾 Salvează </button>
+    <a href="{% url 'list_houses' %}" class="btn btn-secondary">↩️ Înapoi</a>
+  </form>
+{% endblock %}

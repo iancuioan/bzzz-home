@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Toate{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">{{toate}}  - 🏠🐝 &nbsp;&nbsp;&nbsp;
+    <a href="{% url 'add_house' %}" class="btn btn-outline-success">
+          <i class="bi bi-plus-circle me-1"></i>Adaugă 🐝
+        </a>
+    <form method="get" action="{% url 'search_houses' %}" class="d-flex">
+          <input class="form-control me-2" type="search" name="q" placeholder="Caută ..." aria-label="Search">
+        </form>
+  </h2>
+  {% if dataset %}
+    <div class="list-group">
+      {% for house in dataset %}
+        <div class="list-group-item">
+          <h5><strong>{{ house.name }}</strong> <small>(Regina {{ house.leader_year |date:"d-m-Y" }})</small></h5>
+          {% if house.location %}
+          <p><strong>Locație:</strong> {{ house.location }}</p>
+          {% else %}
+          <p><strong>Locație:</strong> - </p>
+          {% endif %}
+          <p><strong>Evaluare:</strong> 
+            {% for i in "12345" %}
+              {% if forloop.counter <= house.rating %}
+                <span style="color:gold;">★</span>
+              {% else %}
+                <span style="color:lightgray;">★</span>
+              {% endif %}
+            {% endfor %}
+          </p>
+          {% if house.status == 'populat' %}
+              <span class="badge text-bg-success">🟢 Populat</span>
+          {% elif house.status == 'depopulat' %}
+              <span class="badge text-bg-danger">🔴 Depopulat</span>
+          {% endif %}
+          <!--<p><strong>Istoric:</strong> <pre>{{ house.history|linebreaksbr|safe|cut:"" }}</pre></p>-->
+          <a href="{% url 'add_visit' house.pk %}" class="btn btn-sm btn-outline-success">+Vizita</a>
+          <a href="{% url 'edit_house' house.pk %}" class="btn btn-sm btn-outline-success">Editează</a>
+          <a href="{% url 'detail_house' house.pk %}" class="btn btn-sm btn-outline-success">Detalii</a>
+          {% if house.bifata %}
+            <a href="{% url 'debifare_view' house.pk %}" class="btn btn-outline-success btn-sm">✔ Debifeaza</a>
+          {% else %}
+            <a href="{% url 'bifare_view' house.pk %}" class="btn btn-outline-success btn-sm">✅ Bifeaza</a>
+          {% endif %}
+          <a href="{% url 'delete_house' house.pk %}" class="btn btn-sm btn-outline-danger"
+             >Șterge</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p> 0 inregistrari.</p>
+    <a href="{% url 'list_houses' %}" class="btn btn-outline-success">Toate</a>
+  {% endif %}
+</div>
+{% endblock %}

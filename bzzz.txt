@@ -1,0 +1,66 @@
+
+
+23-06-25
+mkdir bzzz-home
+cd bzzz-home
+python -m venv venv(sau python3 -m venv venv)
+venv\Scripts\activate
+pip install django
+django-admin --version(5.2.3)
+django-admin startproject bzzz_core .(note the point '.')
+python manage.py startapp users
+Adaugă aplicația în settings.py
+-Deschide fișierul bzzz_core/settings.py și adaugă 'users', în lista INSTALLED_APPS:
+Lasam userul default
+Cream forms.py
+Cream viewuri-le register, login, logout
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+
+python manage.py startapp houses
+models.py
+from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+from datetime import date
+
+# Create your models here.
+
+def validate_leader_year(value):
+    today = date.today()
+    five_years_ago = today.replace(year=today.year - 5)
+    if value > today:
+        raise ValidationError("Data nu poate fi în viitor.")
+    if value < five_years_ago:
+        raise ValidationError("Data trebuie să fie din ultimii 5 ani.")
+
+class House(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='houses')
+    name = models.CharField(max_length=100)
+    #description = models.TextField(blank=True, null=True)
+    #rooms = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(30)])
+    #occupied = models.BooleanField(default=True)
+    leader_year = models.DateField(validators=[validate_leader_year])
+    notes = models.TextField(blank=True, null=True)
+    #house_history = models.TextField(blank=True, null=True)  # nou: jurnal intern
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        default=1,
+        help_text="Rating de la 1 la 5 stele"
+    )
+
+    class Meta:
+        unique_together = ('user', 'name')
+        ordering = ['-leader_year']
+
+    def __str__(self):
+        return f"{self.name} ({self.user.username})"
+  #def log_history(self, action): # ???
+    #    self.house_history += action
+
+
+
+

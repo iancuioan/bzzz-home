@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Alerte{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Alerte: {{alert_count}} </h2>
+  
+  {% if alerts %}
+    <div class="list-group">
+      {% for alert in alerts %}
+        <div class="list-group-item">
+         {{alert.message}} <a href="{% url 'detail_house' alert.house.pk %}" class="arrow-link"> </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>0 Alerts. </p>
+  {% endif %}
+  <a href="{% url 'list_houses' %}" class="btn btn-secondary">Înapoi</a>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <p>Bine ai venit la stupina <b>{{request.user}}!</b></p>
+    <a href="{% url 'profile' %}" class="btn btn-success btn-md mt-1" >
+    <i class="bi bi-person-circle me-1"></i>{{request.user}} 🧑‍🚀
+    </a>
+    <hr>
+    <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex flex-wrap gap-2 mt-3">
+        <a href="{% url 'list_houses' %}" class="btn btn-outline-success">
+          <i class="bi bi-building me-1"></i>Toate 🐝🏡
+        </a>
+        <a href="{% url 'add_house' %}" class="btn btn-outline-success">
+          <i class="bi bi-plus-circle me-1"></i>Adaugă 🐝
+        </a>
+        <form method="get" action="{% url 'search_houses' %}" class="d-flex">
+          <input class="form-control me-2" type="search" name="q" placeholder="Caută ..." aria-label="Search">
+        </form>
+        {% if alert_count != 0 %}
+          <a href="{% url 'alerts_view' %}" class="btn btn-sm btn-outline-secondary">🔔💬 Alerte</a>
+        {% endif %}
+        <a href="{% url 'statistics_view' %}" class="btn btn-outline-success">
+          &#128202;Statistici
+        </a>
+        <a href="{% url 'add_todo' %}" class="btn btn-outline-success">
+          📝 Planificari
+        </a>
+        <a href="{% url 'lista_operatiuni' %}" class="btn btn-outline-success">
+           🧾 Contabil
+        </a>
+        <a href="{% url 'add_treatment' %}" class="btn btn-outline-success">
+           🧪 Tratamente
+        </a>
+        <a href="{% url 'pastoral_view' %}" class="btn btn-outline-success">
+           Pastoral
+        </a><br>
+        <a href="{% url 'genereaza_fisele' %}" class="btn btn-success">
+           ✍️ Fisa familiei .TXT
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

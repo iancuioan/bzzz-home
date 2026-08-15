@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Statistici{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">&#128202; Statistici stupina {{request.user}}</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Total înregistrări:</h5>
+            <p class="display-6">{{ total_houses }}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Clasificare Rating -->
+        <div class="col-md-4">
+            <h5>Evaluări</h5>
+            <ul class="list-group">
+                {% for item in rating_classification %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Rating {{ item.rating }}
+                    <span class="badge bg-primary rounded-pill">{{ item.count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Clasificare Leader Year -->
+        <div class="col-md-4">
+            <h5>Ani regină</h5>
+            <ul class="list-group">
+                {% for item in leader_year_classification %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ item.leader_year|date:"d-m-Y" }}
+                    <span class="badge bg-success rounded-pill">{{ item.count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Clasificare Locație -->
+        <div class="col-md-4">
+            <h5>Locații definite</h5>
+            <ul class="list-group">
+                {% for item in location_classification %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ item.location|default:"(nedefinită)" }}
+                    <span class="badge bg-warning rounded-pill">{{ item.count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Clasificare Status -->
+        <div class="col-md-4">
+            <h5>Status</h5>
+            <ul class="list-group">
+                {% for item in status_classification %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ item.status }}
+                    <span class="badge bg-warning rounded-pill">{{ item.count }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% if alerts %}
+    <div class="alert alert-danger mt-5">
+        <h5>🔔 Alerte:</h5>
+        <ul>
+            {% for alert in alerts %}
+            <li>{{ alert }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div>
+    <ul>
+        <li>Total: {{ total_houses }}</li>
+       <li>✅ Bifate: {{ bifate }}</li>
+       <li>❌ Nebifate: {{ nebifate }}</li>
+    </ul>
+    </div>
+</div>
+{% endblock %}

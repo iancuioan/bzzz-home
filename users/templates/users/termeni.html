@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Termeni și condiții{% endblock %}
+{% load tz %}  <!-- pentru {{ now }} -->
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Termeni și condiții</h1>
+  <p>Ultima actualizare: {% now "Y" %}</p>
+  <hr>
+
+  <h4>Acceptarea termenilor</h4>
+  <p>
+    Prin utilizarea aplicației Bzzz, ești de acord cu acești termeni. Dacă nu ești de acord cu aceștia, nu utiliza serviciile noastre.
+  </p>
+
+  <h4>Utilizarea platformei</h4>
+  <p>
+    Aplicația este destinată exclusiv apicultorilor profesionisti sau amatori.
+  </p>
+
+  <h4>Confidențialitate</h4>
+  <p>
+    Informațiile colectate sunt protejate conform politicii noastre de confidențialitate. Nu partajăm datele fără acordul tău explicit.
+  </p>
+
+  <h4>Limitarea răspunderii</h4>
+  <p>
+    Platforma este furnizată „ca atare”. Nu garantăm funcționarea neîntreruptă, dar depunem eforturi constante pentru stabilitate și securitate.
+  </p>
+
+  <h4>Modificări ale termenilor</h4>
+  <p>
+    Ne rezervăm dreptul de a actualiza acești termeni. Vei fi notificat prin aplicație sau e-mail dacă există modificări semnificative.
+  </p>
+
+  <h4>Utilizarea informațiilor</h4>
+  <p>
+    Datele colectate sunt utilizate exclusiv pentru a oferi acces la platformă, îmbunătățirea funcțiilor și comunicări legate de contul tău.
+  </p>
+
+  <h4>Stocarea și protecția datelor</h4>
+  <p>
+    Ne asigurăm că datele tale sunt stocate în condiții de securitate și nu sunt partajate cu terți fără acordul tău expres.
+  </p>
+
+  <h4>Drepturile utilizatorului</h4>
+  <ul>
+    <li>Acces la datele proprii</li>
+    <li>Rectificare sau ștergere</li>
+    <li>Retragerea consimțământului</li>
+    <li>Portabilitatea datelor</li>
+  </ul>
+
+  <h4>Contact</h4>
+  <p>
+    Pentru orice întrebări sau solicitări legate de protecția datelor, ne poți contacta prin secțiunea <a href="{% url 'feedback' %}">Contact</a>.
+  </p>
+</div>
+{% endblock %}

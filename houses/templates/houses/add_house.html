@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Adaugă 🐝{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h4 class="mb-2"><strong>Adaugă</strong> 🐝</h4>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-1">
+        <strong><label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label></strong><br>
+        {{ field }}
+        {% for error in field.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Salvează</button>
+    <a href="{% url 'list_houses' %}" class="btn btn-secondary ms-2">Renunta</a>
+  </form>
+</div>
+{% endblock %}
+<!--
+  {{ form.as_p }}
+-->

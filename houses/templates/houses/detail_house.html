@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalii{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <ul class="list-group">
+    <h3 class="mb-4">Detalii <strong>{{ house.name }}</strong>&nbsp;&nbsp;&nbsp; <a href="{% url 'list_houses' %}" class="btn btn-outline-success">
+          <i class="bi bi-building me-1"></i>Toate 🐝
+        </a></h3>
+    <li class="list-group-item"><strong>An regină 👑 - </strong>{{ house.leader_year|date:"d-m-Y" }} </li>
+    <li class="list-group-item"><strong>Locație:</strong> {{ house.location|default:"–" }}</li>
+    <!--<li class="list-group-item"><strong>Evaluare:</strong> {{ house.rating }} / 5 ⭐</li>-->
+    <p><strong>Evaluare:</strong> 
+            {% for i in "12345" %}
+              {% if forloop.counter <= house.rating %}
+                <span style="color:gold;">★</span>
+              {% else %}
+                <span style="color:lightgray;">★</span>
+              {% endif %}
+            {% endfor %}
+    </p>
+    <li class="list-group-item"><strong>Istoric:</strong><br></li>
+    {% if history_lines %}
+      <div class="history-box">
+        {% for line in history_lines %}
+         {{ line }}<br>
+         {% if not forloop.last %}{% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Nu există înregistrări în istoric.</p>
+    {% endif %}
+    <li class="list-group-item">
+      {% if house.status == 'populat' %}
+      <span class="badge text-bg-success">🟢 Populat</span>
+      {% elif house.status == 'depopulat' %}
+      <span class="badge text-bg-danger">🔴 Depopulat</span>
+      {% endif %}</li>
+  </ul>
+  <div class="mt-3">
+    <a href="{% url 'add_visit' house.pk %}" class="btn btn-sm btn-outline-success">+Vizita</a>
+    <a href="{% url 'edit_house' house.pk %}" class="btn btn-warning me-2">Editează</a>
+    <a href="{% url 'list_houses' %}" class="btn btn-secondary">Înapoi</a>
+    <a href="{% url 'download_house_txt' house.pk %}" class="btn btn-primary">
+  Genereaza fișa familiei</a>
+    {% if house.bifata %}
+      <a href="{% url 'debifare_view' house.pk %}" class="btn btn-outline-success btn-sm">✔ Debifeaza</a>
+    {% else %}
+      <a href="{% url 'bifare_view' house.pk %}" class="btn btn-outline-success btn-sm">✅ Bifeaza</a>
+    {% endif %}
+    <a href="{% url 'delete_house' house.pk %}" class="btn btn-sm btn-outline-danger"
+        onclick="return confirm('Sigur vrei să ștergi {{ house.name }}?');">Șterge</a>
+  </div>
+</div>
+{% endblock %}

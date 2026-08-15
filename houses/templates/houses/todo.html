@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Planificari{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">📝 Planificari</h2>
+    <form method="post">
+    {% csrf_token %}
+    <p class="text-muted mt-3">🕓 </p>
+    <textarea name="description" rows="10" class="form-control"> {{ todo.description }} </textarea>
+    <button type="submit" class="btn btn-success mt-3">💾 Salvează</button>
+    </form>
+    <p class="text-muted mt-2">Lasă câmpul gol și salvează pentru a șterge continutul.</p>
+
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Fisa familiilor{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h4 class="mb-1">Fisa familiei de albine</h2>
+
+    <p>"✍️ Genereaza Fisa familiei la toate" va crea un fisier zip in Downloads care va contine Fisa familiei pentru toate inregistrarile.</p>
+
+    <a href="{% url 'download_houses_zip' %}" class="btn btn-success">
+           ✍️ Genereaza Fisa familiei la toate</a>
+    <a href="{% url 'list_houses' %}" class="btn btn-secondary ms-2">Anulează</a>
+  </form>
+</div>
+{% endblock %}

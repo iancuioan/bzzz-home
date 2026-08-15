@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+  <h2>🧪 Adaugă tratament la toate.</h2>
+<br>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">{{ form.data_aplicare.label_tag }}<br> {{ form.data_aplicare }}</div>
+    <br>
+    <div class="mb-3">{{ form.medicament.label_tag }}<br> {{ form.medicament }}</div>
+    <br>
+    <button type="submit" class="btn btn-primary" onclick="return confirm('Sigur vrei să aplici tratamentul la toate?')">💾 Salvează tratamentul</button>
+    <a href="{% url 'list_houses' %}" class="btn btn-secondary">↩️ Înapoi</a>
+  </form>
+{% endblock %}
