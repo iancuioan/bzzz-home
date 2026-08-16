@@ -33,4 +33,6 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
-
+# === ETC ===
+Render_info.txt
+bzzz.txt
