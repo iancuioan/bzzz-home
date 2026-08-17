@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 #DEBUG = os.getenv('DEBUG')
 DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = ["bzzz-home.onrender.com"]
+ALLOWED_HOSTS = ["bzzz-home.onrender.com", "*"]
 
 
 # Application definition

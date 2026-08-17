@@ -20,6 +20,7 @@ class House(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='houses')
     name = models.CharField(max_length=100)
     leader_year = models.DateField(
+        #blank=True, null=True,
         validators=[
             MinValueValidator(datetime.date(min_year(), 1, 1)),
             MaxValueValidator(datetime.date(current_year(), 12, 31))
@@ -27,6 +28,7 @@ class House(models.Model):
         )
     location = models.CharField(blank=True, null=True, max_length=100)
     rating = models.PositiveIntegerField(
+        #blank=True, null=True,
         validators=[MinValueValidator(1), MaxValueValidator(5)],
         default=1)
     history = models.TextField(default="") # editable=False,
@@ -35,12 +37,6 @@ class House(models.Model):
     class Meta:
         unique_together = ('user', 'name')
         ordering = ['-leader_year']
-
-    #def clean(self):
-    #    if  self.leader_year != 'Nespecificat':
-    #        if self.leader_year > datetime.date.today():
-    #            raise ValidationError({'leader_year': 'Ups! Data nu poate fi în viitor!!!'})
-
 
     def __str__(self):
         return f"{self.name} ({self.user.username})"

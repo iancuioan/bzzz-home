@@ -6,9 +6,8 @@ from django.utils import timezone
 class HouseForm(forms.ModelForm): # ADD HOUSE FORM
     name = forms.CharField(label="Numar(id)")
     leader_year = forms.DateField(
-        label="An regina 👑", 
-        widget=forms.DateInput(format='%d/%m/%Y',
-               attrs={'type': 'date'})) #attrs={'type': 'datetime-local'} HTML5 datetime picker
+        label="An regina 👑", required=True,
+        widget=forms.DateInput(attrs={'type': 'date'})) 
     location = forms.CharField(label="Locatie(optional)", required=False)
     rating = forms.IntegerField(#label="Evaluare(1...5)",
             widget=forms.NumberInput(attrs={
@@ -17,14 +16,12 @@ class HouseForm(forms.ModelForm): # ADD HOUSE FORM
            widget=forms.Textarea(attrs={'rows':'3', 'cols':'10'}), required=False)
     class Meta:
         model = House
-        #widgets = {
-        #    'notes': forms.Textarea({'rows': 8, 'cols':40}),
-        #    }
         exclude = ['user', 'status', 'bifata'] # , 'history'
     def clean_leader_year(self):
         data = self.cleaned_data.get('leader_year')
-        if data > datetime.date.today():
-            raise forms.ValidationError("⚠️ Data nu poate fi din viitor.")
+        #if data != '':
+        #    if data > datetime.date.today():
+        #        raise forms.ValidationError("⚠️ Data nu poate fi din viitor.")
         return data
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,12 +29,11 @@ class HouseForm(forms.ModelForm): # ADD HOUSE FORM
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["leader_year"].initial = timezone.now().date()
-        self.fields["leader_year"].input_formats = ['%d/%m/%Y']
+        #self.fields["leader_year"].input_formats = ['%d/%m/%Y']
 
 class HouseEditForm(forms.ModelForm): # # EDIT HOUSE FORM
-    name = forms.CharField(label="Numar(id)")
     leader_year = forms.DateField(
-        label="An regina 👑", 
+        label="An regina 👑 {{ self.instance.leader_year }}", 
         widget=forms.DateInput(attrs={'type': 'date'})
     )
     location = forms.CharField(label="Locatie(optional)", required=False)
@@ -48,14 +44,15 @@ class HouseEditForm(forms.ModelForm): # # EDIT HOUSE FORM
            widget=forms.Textarea(attrs={'rows':'3', 'cols':'10'}), required=False)
     class Meta:
         model = House
-        #widgets = {
-        #    'notes': forms.Textarea({'rows': 8, 'cols':40}),
-        #    }
-        exclude = ['user', 'bifata'] # , 'history'
+        exclude = ['user', 'name', 'bifata'] # , 'history'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['rating'].label = 'Evaluare(1...5 ⭐)' # Adaugă steaua în label
-
+        if self.instance and self.instance.leader_year:
+            self.fields['leader_year'].label=(
+                f"An regina ({self.instance.leader_year.strftime('%d-%m-%Y')})"
+            )
+        
 class TodoForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'rows':'5', 'cols':'12'}),
                                   required=False)

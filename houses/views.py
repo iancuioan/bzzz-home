@@ -26,13 +26,18 @@ def add_house(request):
         form = HouseForm(request.POST)
         if form.is_valid():
             house = form.save(commit=False)
-            house.leader_year = form.cleaned_data['leader_year']
-            print('house.leader_year = ', house.leader_year)
-            if house.leader_year == None: 
-                house.leader_year = 'Nespecificat'
+            house.leader_year = form.cleaned_data.get('leader_year')
             house.user = request.user
-            house_history = form.cleaned_data['history']  
-            house.history = f"Inregistrat in {date.today()}: Regina-{house.leader_year}, {house_history}\n"
+            house.history = form.cleaned_data.get('history') 
+            if house.leader_year is None:
+                leader_text = "Nespecificat"
+            else:
+                leader_text = house.leader_year.strftime("%d/%m/%Y")
+
+            house.history = (
+                f"Inregistrat in {date.today().strftime('%d/%m/%Y')}: "
+                f"Regina-{leader_text}, {house.history}\n"
+            )
             house.save()
             messages.success(request, f"Inregistrat {house.name}.")
             return redirect('list_houses') 
@@ -48,8 +53,7 @@ def edit_house(request, pk):
         form = HouseEditForm(request.POST, instance=house)
         if form.is_valid():
             house = form.save(commit=False)
-            #entry = f"{timestamp}: {edit_notes}\n" if edit_notes != "" else ""
-            #house.history += (entry or "")
+            
             if form.cleaned_data['leader_year'] != leaderyear:
                 house.history += f"{timestamp}: schimbat regina({form.cleaned_data['leader_year']})\n"
             house.save()
