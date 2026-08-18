@@ -28,16 +28,16 @@ class HouseForm(forms.ModelForm): # ADD HOUSE FORM
         self.fields['rating'].label = 'Evaluare(1...5 ⭐)' # Adaugă steaua în label
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["leader_year"].initial = timezone.now().date()
+        self.initial["leader_year"] = timezone.now().date()
         #self.fields["leader_year"].input_formats = ['%d/%m/%Y']
 
 class HouseEditForm(forms.ModelForm): # # EDIT HOUSE FORM
     leader_year = forms.DateField(
-        label="An regina 👑 {{ self.instance.leader_year }}", 
-        widget=forms.DateInput(attrs={'type': 'date'})
+        label="An regina 👑 {{ instance.leader_year }}", 
+        widget=forms.DateInput(attrs={'type': 'date'},format='%Y-%m-%d'), required=False,
     )
     location = forms.CharField(label="Locatie(optional)", required=False)
-    rating = forms.IntegerField(#label="Evaluare(1...5)",
+    rating = forms.IntegerField(label="Evaluare(1...5 ⭐)",
             widget=forms.NumberInput(attrs={
                'min': 1,'max': 5,'step': 1}))   
     history = forms.CharField(label="Istoric 📜", 
@@ -45,13 +45,15 @@ class HouseEditForm(forms.ModelForm): # # EDIT HOUSE FORM
     class Meta:
         model = House
         exclude = ['user', 'name', 'bifata'] # , 'history'
+    #def __init__(self, *args, **kwargs):
+    #    super().__init__(*args, **kwargs)
+    #    self.fields['rating'].label = 'Evaluare(1...5 ⭐)' # Adaugă steaua în label
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['rating'].label = 'Evaluare(1...5 ⭐)' # Adaugă steaua în label
-        if self.instance and self.instance.leader_year:
-            self.fields['leader_year'].label=(
-                f"An regina ({self.instance.leader_year.strftime('%d-%m-%Y')})"
-            )
+        instance = kwargs.get('instance')
+        if instance:
+            self.initial['leader_year'] = instance.leader_year
+            self.fields['leader_year'].label = f"An regina - {self.instance.leader_year}"
         
 class TodoForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'rows':'5', 'cols':'12'}),

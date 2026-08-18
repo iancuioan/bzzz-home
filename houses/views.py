@@ -29,14 +29,14 @@ def add_house(request):
             house.leader_year = form.cleaned_data.get('leader_year')
             house.user = request.user
             house.history = form.cleaned_data.get('history') 
-            if house.leader_year is None:
-                leader_text = "Nespecificat"
-            else:
-                leader_text = house.leader_year.strftime("%d/%m/%Y")
+            #if house.leader_year is None:
+            #    leader_text = "Nespecificat"
+            #else:
+            #    leader_text = house.leader_year.strftime("%d/%m/%Y")
 
             house.history = (
                 f"Inregistrat in {date.today().strftime('%d/%m/%Y')}: "
-                f"Regina-{leader_text}, {house.history}\n"
+                f"Regina-{house.leader_year}, {house.history}\n"
             )
             house.save()
             messages.success(request, f"Inregistrat {house.name}.")
@@ -48,14 +48,17 @@ def add_house(request):
 @login_required # Editare inregistrare
 def edit_house(request, pk):
     house = get_object_or_404(House, pk=pk, user=request.user)
-    leaderyear = house.leader_year
+    #leaderyear = house.leader_year
     if request.method == 'POST':
         form = HouseEditForm(request.POST, instance=house)
         if form.is_valid():
             house = form.save(commit=False)
             
-            if form.cleaned_data['leader_year'] != leaderyear:
+            if form.cleaned_data['leader_year'] != house.leader_year and form.cleaned_data['leader_year'] != None:
                 house.history += f"{timestamp}: schimbat regina({form.cleaned_data['leader_year']})\n"
+                house.leader_year = form.cleaned_data['leader_year']
+            else:
+                house.leader_year = house.leader_year
             house.save()
             messages.success(request, f"„{house.name}” a fost actualizat.")
             return redirect('detail_house', pk=pk)
