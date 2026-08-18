@@ -2,9 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-#---------------------------------------------
-import django
-#---------------------------------------------
 
 
 def main():
@@ -19,14 +16,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-    #--------------------------------------------
-    django.setup()
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'iancuioan897@yahoo.ro', 'AndreI0806_@')
-        print("=== Superuser 'admin' creat cu succes! ===")
-    #--------------------------------------------
 
 
 if __name__ == '__main__':
