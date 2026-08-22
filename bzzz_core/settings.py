@@ -76,18 +76,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-if os.environ.get('VERCEL'):  # sau 'RENDER' / 'RAILWAY'
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL: 
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-else:
+        'default':{
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+            'OPTIONS': {
+                'sslmode': 'require',  # Important pentru Supabase
+                },
+            }
+        }
+else:  # Configurare pentru dezvoltare locală (SQLite)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
