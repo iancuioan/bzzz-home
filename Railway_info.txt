@@ -78,21 +78,4 @@ paste it directly into Railway, to make things easier.
 După ce ai configurat aceste elemente și ai finalizat deploy-ul, 
 proiectul tău Django ar trebui să ruleze cu succes pe Railway.
 ===============================================================
-                 VERCEL
-     Pe Vercel configurare Postgres
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYm5lanhycWF5YmRudmxubnFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTAyMDAsImV4cCI6MjEwMjk4NjIwMH0.6rBhCRQeE9YtVT-K47aEmYHtAyiyQy1jK99uL-May6w"
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_Kq5x-iStTpQB47z1riL0hA_P_G1gFAy"
-SUPABASE_URL="https://gkbnejxrqaybdnvlnnqk.supabase.co"
-POSTGRES_DATABASE="postgres"
-POSTGRES_HOST="db.gkbnejxrqaybdnvlnnqk.supabase.co"
-POSTGRES_PASSWORD="Lbj1LIS1a4ZEPFNo"
-POSTGRES_PRISMA_URL="postgres://postgres.gkbnejxrqaybdnvlnnqk:Lbj1LIS1a4ZEPFNo@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?sslmode=require&pgbouncer=true"
-POSTGRES_URL="postgres://postgres.gkbnejxrqaybdnvlnnqk:Lbj1LIS1a4ZEPFNo@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?sslmode=require&supa=base-pooler.x"
-POSTGRES_URL_NON_POOLING="postgres://postgres.gkbnejxrqaybdnvlnnqk:Lbj1LIS1a4ZEPFNo@aws-0-eu-central-1.pooler.supabase.com:5432/postgres?sslmode=require"
-POSTGRES_USER="postgres"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYm5lanhycWF5YmRudmxubnFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTAyMDAsImV4cCI6MjEwMjk4NjIwMH0.6rBhCRQeE9YtVT-K47aEmYHtAyiyQy1jK99uL-May6w"
-SUPABASE_JWT_SECRET="qpgiU1n2jfXjkIloIhLeShRBRI4tsLI0J16CO6uwunrkkCkFchmpPzqpTMzf3+g75NaDzS7FJ2GijZz0UFohmg=="
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="sb_publishable_Kq5x-iStTpQB47z1riL0hA_P_G1gFAy"
-SUPABASE_SECRET_KEY="sb_secret_teys-4Bdwh9chUqQohcn4w_Z8hQooyD"
-SUPABASE_SERVICE_ROLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrYm5lanhycWF5YmRudmxubnFrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NzQxMDIwMCwiZXhwIjoyMTAyOTg2MjAwfQ.YAPxCadHWzYTLn7M9FpPl5YAqynpKmB3QtlZc3-e6CU"
-SUPABASE_URL="https://gkbnejxrqaybdnvlnnqk.supabase.co"
+ 
