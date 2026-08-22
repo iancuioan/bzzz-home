@@ -23,14 +23,12 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.getenv('DEBUG')
 DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = ["bzzz-home.onrender.com", "*"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +47,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 MIDDLEWARE = [
     #'axes.middleware.AxesMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Adaugă imediat după SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,13 +79,22 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        ssl_require=False  # Render folosește SSL intern
-    )
-}
+if os.environ.get('VERCEL'):  # sau 'RENDER' / 'RAILWAY'
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -130,7 +138,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 AUTHENTICATION_BACKENDS = [
