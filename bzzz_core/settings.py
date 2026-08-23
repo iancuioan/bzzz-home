@@ -54,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Adaugă middleware-ul creat:
+    'users.middleware.DemoUserProtectionMiddleware',# ptr demo user
     #'users.middleware.RedirectAuthenticatedUserMiddleware',# restrict login for anonimus user
 ]
 

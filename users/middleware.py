@@ -34,3 +34,30 @@ class RedirectAuthenticatedUserMiddleware:
 
         return self.get_response(request)
 """
+from django.contrib import messages
+from django.shortcuts import redirect
+
+class DemoUserProtectionMiddleware:
+    """
+    Blochează acțiunile de modificare (POST, PUT, DELETE) 
+    pentru contul de demo.
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Specifică username-ul contului de demo
+        DEMO_USERNAME = 'demo'
+
+        if request.user.is_authenticated and request.user.username == DEMO_USERNAME:
+            # Permite doar vizualizarea (GET, HEAD, OPTIONS)
+            if request.method not in ['GET', 'HEAD', 'OPTIONS']:
+                messages.warning(
+                    request, 
+                    "Sunteți în modul DEMO. Acțiunile de adăugare, editare sau ștergere sunt dezactivate."
+                )
+                # Redirecționează utilizatorul la pagina de unde a încercat să facă acțiunea
+                return redirect(request.META.get('HTTP_REFERER', '/'))
+
+        response = self.get_response(request)
+        return response

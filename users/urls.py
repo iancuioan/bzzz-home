@@ -46,4 +46,5 @@ urlpatterns = [
              template_name='users/password_change_done.html'
          ), 
          name='password_change_done'),
+     path('demo-login/', views.demo_login_view, name='demo_login'),
     ]

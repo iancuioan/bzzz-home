@@ -11,6 +11,7 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetCompleteView
 )
+from django.contrib.auth.models import User
 
 # Create your views here.
 def register_view(request):
@@ -72,3 +73,21 @@ def profile_view(request):
 def termeni_view(request):
     return render(request, 'users/termeni.html')
 
+def demo_login_view(request):
+    """
+    Loghează automat utilizatorul de demo fără formular.
+    """
+    DEMO_USERNAME = 'demo'
+    
+    try:
+        # Preluăm utilizatorul demo din baza de date
+        user = User.objects.get(username=DEMO_USERNAME)
+        
+        # Logăm utilizatorul direct în sesiune
+        login(request, user)
+        messages.info(request, "Te-ai logat pe contul de DEMO (mod doar vizualizare).")
+        return redirect('homepage')  # Redirecționează către pagina principală sau dashboard
+        
+    except User.DoesNotExist:
+        messages.error(request, "Contul de demo nu a fost găsit în baza de date.")
+        return redirect('login')
