@@ -123,7 +123,7 @@ if IS_VERCEL:
             'DISABLE_SERVER_SIDE_CURSORS': True, 
         }
     }
-    print("✅ Folosește PostgreSQL pe Supabase")
+    
 else:
     DATABASES = {
         'default': {
@@ -131,7 +131,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-    print("⚠️ Folosește SQLite (dezvoltare locală)")
+    
 # -------------------------------------------------------------
 
 
