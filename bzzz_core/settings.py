@@ -104,11 +104,10 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 #     }
 
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
-# Verifică dacă suntem pe Vercel
-ON_VERCEL = os.environ.get('VERCEL', False)
+# Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
+IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
 
-if ON_VERCEL or os.environ.get('POSTGRES_URL'):
-    # Configurare manuală pentru Supabase PostgreSQL
+if IS_VERCEL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -120,11 +119,12 @@ if ON_VERCEL or os.environ.get('POSTGRES_URL'):
             'OPTIONS': {
                 'sslmode': 'require',
             },
+            # OBLIGATORIU pentru portul 6543 (Transaction Mode pe Supabase Pooler)
+            'DISABLE_SERVER_SIDE_CURSORS': True, 
         }
     }
-    print("✅ Folosește PostgreSQL pe Supabase (configurare manuală)")
+    print("✅ Folosește PostgreSQL pe Supabase")
 else:
-    # Dezvoltare locală - SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
