@@ -76,32 +76,63 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DATABASE_URL = (os.environ.get('DATABASE_URL') or
-               os.environ.get('POSTGRES_URL') 
-)
-if DATABASE_URL: 
+# # Database
+# # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# DATABASE_URL = (os.environ.get('DATABASE_URL') or
+#                os.environ.get('POSTGRES_URL') 
+# )
+# if DATABASE_URL: 
+#     DATABASES = {
+#         'default':{
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.environ.get('DB_NAME'),
+#             'USER': os.environ.get('DB_USER'),
+#             'PASSWORD': os.environ.get('DB_PASSWORD'),
+#             'HOST': os.environ.get('DB_HOST'),
+#             'PORT': os.environ.get('DB_PORT', '5432'),
+#             'OPTIONS': {
+#                 'sslmode': 'require',  # Important pentru Supabase
+#                 },
+#             }
+#         }
+# else:  # Configurare pentru dezvoltare locală (SQLite)
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
+
+# ------------------ CONFIGURARE BAZĂ DE DATE ------------------
+# Verifică dacă suntem pe Vercel
+ON_VERCEL = os.environ.get('VERCEL', False)
+
+if ON_VERCEL or os.environ.get('POSTGRES_URL'):
+    # Configurare manuală pentru Supabase PostgreSQL
     DATABASES = {
-        'default':{
+        'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('DB_USER'),
-            'PASSWORD': os.environ.get('DB_PASSWORD'),
-            'HOST': os.environ.get('DB_HOST'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
+            'NAME': 'postgres',
+            'USER': 'postgres.gkbnejxrqaybdnvlnnqk',
+            'PASSWORD': 'Lbj1LIS1a4ZEPFNo',
+            'HOST': 'aws-0-eu-central-1.pooler.supabase.com',
+            'PORT': '6543',
             'OPTIONS': {
-                'sslmode': 'require',  # Important pentru Supabase
-                },
-            }
+                'sslmode': 'require',
+            },
         }
-else:  # Configurare pentru dezvoltare locală (SQLite)
+    }
+    print("✅ Folosește PostgreSQL pe Supabase (configurare manuală)")
+else:
+    # Dezvoltare locală - SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    print("⚠️ Folosește SQLite (dezvoltare locală)")
+# -------------------------------------------------------------
 
 
 # Password validation
