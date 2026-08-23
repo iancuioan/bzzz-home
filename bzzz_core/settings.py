@@ -78,8 +78,9 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DATABASE_URL = os.environ.get('DATABASE_URL')
-
+DATABASE_URL = (os.environ.get('DATABASE_URL') or
+               os.environ.get('POSTGRES_URL') 
+)
 if DATABASE_URL: 
     DATABASES = {
         'default':{
