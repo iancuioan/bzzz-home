@@ -80,25 +80,14 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # # Database
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DB_POSTGRES_URL = os.environ.get("DB_POSTGRES_URL")
-
-if DB_POSTGRES_URL:
-    # Production: Supabase PostgreSQL
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DB_POSTGRES_URL,
-            conn_max_age=0,
-            ssl_require=True,
-        )
-    }
-else:
-    # Local development: SQLite
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+DATABASES = {
+    "default": dj_database_url.config(
+        env="DB_POSTGRES_URL",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=True if os.environ.get("DB_POSTGRES_URL") else False,
+    )
+}
 
 """
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
