@@ -88,18 +88,12 @@ raw_db_url = (
 )
 
 if raw_db_url:
-    # Curățăm spațiile libere și eventualii parametri incompatibili din URL-ul Supabase
-    clean_db_url = raw_db_url.strip().split("&supa=")[0]
+    # Curățăm spațiile libere și eventualii parametri non-standard Supabase
+    clean_url = raw_db_url.strip().split("&supa=")[0]
 
-    DATABASES = {
-        "default": dj_database_url.parse(
-            clean_db_url,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
+    DATABASES = {"default": dj_database_url.parse(clean_url)}
 else:
-    # Fallback doar pentru dezvoltare locală
+    # Fallback SQLite pentru dezvoltare locală
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
