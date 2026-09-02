@@ -74,21 +74,34 @@ def termeni_view(request):
     return render(request, 'users/termeni.html')
 
 def demo_login_view(request):
-    """
-    Loghează automat utilizatorul 'demo' fără formular cu ajutorul midlware.py care nu lasa
-    utilizatorul sa modifice inregistrarile facute in contul 'demo'.
-    """
-    DEMO_USERNAME = 'demo'
-    
+    """Loghează automat utilizatorul 'demo' fără formular."""
+    DEMO_USERNAME = "demo"
+
     try:
-        # Preluăm utilizatorul demo din baza de date
-        user = User.objects.get(username=DEMO_USERNAME)
-        
-        # Logăm utilizatorul direct în sesiune
+        # get_or_create previne eroarea User.DoesNotExist pe baza de date nouă (Supabase)
+        user, created = User.objects.get_or_create(
+            username=DEMO_USERNAME,
+            defaults={
+                "email": "demo@example.com",
+                "is_active": True,
+            },
+        )
+
+        if created:
+            user.set_unusable_password()
+            user.save()
+
+        # Atașăm backend-ul pentru a evita AttributeError la login() direct
+        user.backend = "django.contrib.auth.backends.ModelBackend"
+
         login(request, user)
-        messages.info(request, "Te-ai logat pe contul de DEMO (mod doar vizualizare).")
-        return redirect('homepage')  # Redirecționează către pagina principală sau dashboard
-        
-    except User.DoesNotExist:
-        messages.error(request, "Contul de demo nu a fost găsit în baza de date.")
-        return redirect('login')
+        messages.info(
+            request, "Te-ai logat pe contul de DEMO (mod doar vizualizare)."
+        )
+        return redirect("homepage")
+
+    except Exception as e:
+        messages.error(
+            request, f"Eroare la autentificarea pe contul demo: {str(e)}"
+        )
+        return redirect("login")
