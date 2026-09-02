@@ -75,7 +75,8 @@ def termeni_view(request):
 
 def demo_login_view(request):
     """
-    Loghează automat utilizatorul de demo fără formular.
+    Loghează automat utilizatorul 'demo' fără formular cu ajutorul midlware.py care nu lasa
+    utilizatorul sa modifice inregistrarile facute in contul 'demo'.
     """
     DEMO_USERNAME = 'demo'
     

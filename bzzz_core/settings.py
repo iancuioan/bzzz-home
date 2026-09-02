@@ -80,31 +80,27 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # # Database
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-# DATABASE_URL = (os.environ.get('DATABASE_URL') or
-#                os.environ.get('POSTGRES_URL') 
-# )
-# if DATABASE_URL: 
-#     DATABASES = {
-#         'default':{
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': os.environ.get('DB_NAME'),
-#             'USER': os.environ.get('DB_USER'),
-#             'PASSWORD': os.environ.get('DB_PASSWORD'),
-#             'HOST': os.environ.get('DB_HOST'),
-#             'PORT': os.environ.get('DB_PORT', '5432'),
-#             'OPTIONS': {
-#                 'sslmode': 'require',  # Important pentru Supabase
-#                 },
-#             }
-#         }
-# else:  # Configurare pentru dezvoltare locală (SQLite)
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
+DB_POSTGRES_URL = os.environ.get("DB_POSTGRES_URL")
 
+if DB_POSTGRES_URL:
+    # Production: Supabase PostgreSQL
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DB_POSTGRES_URL,
+            conn_max_age=0,
+            ssl_require=True,
+        )
+    }
+else:
+    # Local development: SQLite
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+"""
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
 IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
@@ -133,7 +129,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-    
+"""    
 # -------------------------------------------------------------
 
 
