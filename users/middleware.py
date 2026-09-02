@@ -36,28 +36,56 @@ class RedirectAuthenticatedUserMiddleware:
 """
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.urls import reverse
 
 class DemoUserProtectionMiddleware:
-    """
-    Blochează acțiunile de modificare (POST, PUT, DELETE) 
-    pentru contul de demo.
-    """
+    """Blochează acțiunile de modificare (POST, PUT, PATCH, DELETE) pentru contul de demo."""
+
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        # Specifică username-ul contului de demo
-        DEMO_USERNAME = 'demo'
+        DEMO_USERNAME = "demo"
 
-        if request.user.is_authenticated and request.user.username == DEMO_USERNAME:
-            # Permite doar vizualizarea (GET, HEAD, OPTIONS)
-            if request.method not in ['GET', 'HEAD', 'OPTIONS']:
+        # Verificăm dacă utilizatorul este autentificat și este pe contul demo
+        if (
+            request.user.is_authenticated
+            and request.user.username == DEMO_USERNAME
+        ):
+            # Lista de metode sigure (doar citire)
+            if request.method not in ["GET", "HEAD", "OPTIONS"]:
+
+                # Excepție 1: Permitem acțiunea de LOGOUT chiar dacă este de tip POST
+                logout_url = reverse(
+                    "logout"
+                )  # Înlocuiește 'logout' cu numele rutei tale dacă diferă
+                if request.path == logout_url:
+                    return self.get_response(request)
+
+                # Excepție 2: Tratăm cererile de tip AJAX / Fetch / API
+                if (
+                    request.headers.get("x-requested-with") == "XMLHttpRequest"
+                    or "application/json"
+                    in request.headers.get("Accept", "")
+                ):
+                    return JsonResponse(
+                        {
+                            "error": "Sunteți în modul DEMO. Modificările sunt dezactivate."
+                        },
+                        status=403,
+                    )
+
+                # Pentru cereri standard din formulare HTML: adăugăm mesaj și redirecționăm
                 messages.warning(
-                    request, 
-                    "Sunteți în modul DEMO. Acțiunile de adăugare, editare sau ștergere sunt dezactivate."
+                    request,
+                    "Sunteți în modul DEMO. Acțiunile de adăugare, editare sau ștergere sunt dezactivate.",
                 )
-                # Redirecționează utilizatorul la pagina de unde a încercat să facă acțiunea
-                return redirect(request.META.get('HTTP_REFERER', '/'))
 
-        response = self.get_response(request)
-        return response
+                # Folosim HTTP_REFERER cu fallback sigur
+                referer = request.META.get("HTTP_REFERER")
+                if referer and referer != request.build_absolute_uri():
+                    return redirect(referer)
+                return redirect("homepage")  # Schimbă cu ruta ta principală
+
+        return self.get_response(request)
