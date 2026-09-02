@@ -80,23 +80,26 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # # Database
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-DATABASE_URL = (
+raw_db_url = (
     os.environ.get("DB_POSTGRES_URL")
+    or os.environ.get("DB_POSGRES_URL")
     or os.environ.get("POSTGRES_URL")
     or os.environ.get("DATABASE_URL")
 )
 
-if DATABASE_URL:
-    # Producție (Vercel + Supabase / PostgreSQL)
+if raw_db_url:
+    # Curățăm spațiile libere și eventualii parametri incompatibili din URL-ul Supabase
+    clean_db_url = raw_db_url.strip().split("&supa=")[0]
+
     DATABASES = {
         "default": dj_database_url.parse(
-            DATABASE_URL,
+            clean_db_url,
             conn_max_age=600,
             conn_health_checks=True,
         )
     }
 else:
-    # Dezvoltare locală (SQLite)
+    # Fallback doar pentru dezvoltare locală
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
