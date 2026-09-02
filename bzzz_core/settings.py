@@ -80,6 +80,25 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # # Database
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+if os.getenv("DB_ENGINE", "sqlite") == "postgres":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB_NAME"),
+            "USER": os.getenv("POSTGRES_DB_USER"),
+            "PASSWORD": os.getenv("POSTGRES_DB_PASSWORD"),
+            "HOST": os.getenv("POSTGRES_DB_HOST"),
+            "PORT": os.getenv("POSTGRES_DB_PORT"),
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+"""
 raw_db_url = (
     os.environ.get("DB_POSTGRES_URL")
     or os.environ.get("DB_POSGRES_URL")
@@ -100,7 +119,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
+"""
 """
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
