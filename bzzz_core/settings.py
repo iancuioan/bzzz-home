@@ -101,12 +101,14 @@ if os.environ.get("DB_ENGINE") == "postgres":
     }
     
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+    # Cod temporar de debug pentru Vercel Log-uri
+    raise Exception(f"DB_ENGINE detectat ca fiind: '{os.environ.get('DB_ENGINE')}' - Se încearcă fallback pe SQLite!")
+    #DATABASES = {
+    #    'default': {
+    #        'ENGINE': 'django.db.backends.sqlite3',
+    #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #    }
+    #}
 
 # -------------------------------------------------------------
 
