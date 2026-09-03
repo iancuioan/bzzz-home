@@ -80,6 +80,7 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # # Database
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 if os.getenv("DB_ENGINE", "sqlite") == "postgres":
     DATABASES = {
         "default": {
@@ -98,28 +99,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-"""
-raw_db_url = (
-    os.environ.get("DB_POSTGRES_URL")
-    or os.environ.get("DB_POSGRES_URL")
-    or os.environ.get("POSTGRES_URL")
-    or os.environ.get("DATABASE_URL")
-)
 
-if raw_db_url:
-    # Curățăm spațiile libere și eventualii parametri non-standard Supabase
-    clean_url = raw_db_url.strip().split("&supa=")[0]
-
-    DATABASES = {"default": dj_database_url.parse(clean_url)}
-else:
-    # Fallback SQLite pentru dezvoltare locală
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-"""
 """
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
@@ -149,7 +129,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-"""    
+"""
 # -------------------------------------------------------------
 
 
