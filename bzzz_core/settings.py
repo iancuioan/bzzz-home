@@ -84,21 +84,18 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
 IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
 
-if os.environ.get("DB_ENGINE", "sqlite") == "postgres":
+if os.environ.get("DB_ENGINE") == "postgres":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get("DB_NAME"),#'postgres',
-            'USER': os.environ.get("DB_USER"),#'postgres.gkbnejxrqaybdnvlnnqk',
-            'PASSWORD': os.environ.get("DB_PASSWORD"),#'Lbj1LIS1a4ZEPFNo',
-            'HOST': os.environ.get("DB_HOST"),#'aws-0-eu-central-1.pooler.supabase.com',
+            'NAME': os.environ.get("DB_NAME"),
+            'USER': os.environ.get("DB_USER"),
+            'PASSWORD': os.environ.get("DB_PASSWORD"),
+            'HOST': os.environ.get("DB_HOST"),
             'PORT': os.environ.get("DB_PORT"),#'6543',
-            "SUPABASE_URL" : os.environ.get("SUPABASE_URL"),
-            "NEXT_PUBLIC_SUPABASE_ANON_KEY" : os.environ.get("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
             'OPTIONS': {
                 'sslmode': 'require',
             },
-            # OBLIGATORIU pentru portul 6543 (Transaction Mode pe Supabase Pooler)
             'DISABLE_SERVER_SIDE_CURSORS': True, 
         }
     }
