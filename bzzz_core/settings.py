@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
-IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
+#IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
 
 if os.environ.get("DB_ENGINE") == "postgres":
     DATABASES = {
