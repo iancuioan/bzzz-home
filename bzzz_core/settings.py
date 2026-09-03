@@ -105,7 +105,7 @@ else:
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
 IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
 
-if IS_VERCEL:
+if os.getenv("DB_ENGINE", "sqlite") == "postgres":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
