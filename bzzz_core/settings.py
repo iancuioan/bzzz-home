@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 
 # # Database
 # # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+"""
 if os.getenv("DB_ENGINE", "sqlite") == "postgres":
     DATABASES = {
         "default": {
@@ -99,8 +99,8 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
 """
+
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
 IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
@@ -129,7 +129,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-"""
+
 # -------------------------------------------------------------
 
 
