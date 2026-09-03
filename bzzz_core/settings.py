@@ -114,6 +114,8 @@ if IS_VERCEL:
             'PASSWORD': os.environ.get("DB_PASSWORD"),#'Lbj1LIS1a4ZEPFNo',
             'HOST': os.environ.get("DB_HOST"),#'aws-0-eu-central-1.pooler.supabase.com',
             'PORT': os.environ.get("DB_PORT"),#'6543',
+            "SUPABASE_URL" : os.environ.get("SUPABASE_URL"),
+            "NEXT_PUBLIC_SUPABASE_ANON_KEY" : os.environ.get("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
             'OPTIONS': {
                 'sslmode': 'require',
             },
