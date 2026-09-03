@@ -109,11 +109,11 @@ if IS_VERCEL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv("DB_NAME"),#'postgres',
-            'USER': os.getenv("DB_USER"),#'postgres.gkbnejxrqaybdnvlnnqk',
-            'PASSWORD': os.getenv("DB_PASSWORD"),#'Lbj1LIS1a4ZEPFNo',
-            'HOST': os.getenv("DB_HOST"),#'aws-0-eu-central-1.pooler.supabase.com',
-            'PORT': os.getenv("DB_PORT"),#'6543',
+            'NAME': os.environ.get("DB_NAME"),#'postgres',
+            'USER': os.environ.get("DB_USER"),#'postgres.gkbnejxrqaybdnvlnnqk',
+            'PASSWORD': os.environ.get("DB_PASSWORD"),#'Lbj1LIS1a4ZEPFNo',
+            'HOST': os.environ.get("DB_HOST"),#'aws-0-eu-central-1.pooler.supabase.com',
+            'PORT': os.environ.get("DB_PORT"),#'6543',
             'OPTIONS': {
                 'sslmode': 'require',
             },
