@@ -23,7 +23,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG")
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -85,24 +85,18 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 #IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
 DB_POSTGRES_URL = os.environ.get("DB_POSTGRES_URL")
 
-if DB_POSTGRES_URL:
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DB_POSTGRES_URL,
-            conn_max_age=0,
-            ssl_require=True,
-        )
-    }
+if not DB_POSTGRES_URL:
+    raise RuntimeError("DB_POSTGRES_URL nu este configurat în mediul Vercel.")
 
-    DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
+DATABASES = {
+    "default": dj_database_url.parse(
+        DB_POSTGRES_URL,
+        conn_max_age=0,
+        ssl_require=True,
+    )
+}
 
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
+DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
 """
 if os.environ.get("DB_ENGINE") == "postgres":
     DATABASES = {
