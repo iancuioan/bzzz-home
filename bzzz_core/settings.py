@@ -83,7 +83,27 @@ WSGI_APPLICATION = 'bzzz_core.wsgi.application'
 # ------------------ CONFIGURARE BAZĂ DE DATE ------------------
 # Verifica daca variabila VERCEL exista in mediu (este "1" pe Vercel)
 #IS_VERCEL = os.environ.get('VERCEL') == '1' or 'POSTGRES_URL' in os.environ
+DB_POSTGRES_URL = os.environ.get("DB_POSTGRES_URL")
 
+if DB_POSTGRES_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DB_POSTGRES_URL,
+            conn_max_age=0,
+            ssl_require=True,
+        )
+    }
+
+    DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
+
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+"""
 if os.environ.get("DB_ENGINE") == "postgres":
     DATABASES = {
         'default': {
@@ -107,7 +127,7 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-
+"""
 # -------------------------------------------------------------
 
 
